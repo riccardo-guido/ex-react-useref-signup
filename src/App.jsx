@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useRef } from 'react'
 
 const letters = "abcdefghijklmnopqrstuvwxyz";
 const numbers = "0123456789";
@@ -7,11 +7,11 @@ const symbols = "!@#$%^&*()-_=+[]{}|;:'\",.<>?/`~";
 
 function App() {
 
-  const [fullName, setFullName] = useState("");
+  const fullNameRef = useRef();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [specialization, setSpecialization] = useState("");
-  const [experienceYears, setExperienceYears] = useState("");
+  const specializationRef = useRef();
+  const experienceYearsRef = useRef();
   const [description, setDescription] = useState("");
 
   const isUsernameValid = useMemo(() => {
@@ -36,6 +36,11 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const fullName = fullNameRef.current.value;
+    const specialization = specializationRef.current.value;
+    const experienceYears = experienceYearsRef.current.value;
+    
     if(
       !fullName.trim() ||
       !username.trim() ||
@@ -69,7 +74,7 @@ function App() {
       <form onSubmit={handleSubmit}>
         <label>
           <p>Nome Completo</p>
-          <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} />
+          <input type="text" ref={fullNameRef}/>
         </label>
         <label>
           <p>Username</p>
@@ -91,7 +96,7 @@ function App() {
         </label>
         <label>
           <p>Specializzazione</p>
-         <select value={specialization} onChange={(e) => setSpecialization(e.target.value)}>
+         <select ref={specializationRef}>
            <option value="">Seleziona...</option>
            <option value="frontend">Frontend</option>
            <option value="backend">Backend</option>
@@ -99,7 +104,7 @@ function App() {
          </select>
         </label>
         <label>Anni di esperienza</label>
-        <input type="number" value={experienceYears} onChange={(e) => setExperienceYears(e.target.value)} />
+        <input type="number" ref={experienceYearsRef}/>
         <label>
           <p>Descrizione</p>
           <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
